@@ -63,7 +63,7 @@ class AbstractCollocationFinder:
 
     @classmethod
     def _build_new_documents(
-        cls, documents, window_size, pad_left=False, pad_right=False, pad_symbol=None
+            cls, documents, window_size, pad_left=False, pad_right=False, pad_symbol=None
     ):
         """
         Pad the document with the place holder according to the window_size
@@ -90,7 +90,7 @@ class AbstractCollocationFinder:
 
     @staticmethod
     def _ngram_freqdist(words, n):
-        return FreqDist(tuple(words[i : i + n]) for i in range(len(words) - 1))
+        return FreqDist(tuple(words[i: i + n]) for i in range(len(words) - 1))
 
     def _apply_filter(self, fn=lambda ngram, freq: False):
         """Generic filter removes ngrams from the frequency distribution
@@ -164,7 +164,7 @@ class BigramCollocationFinder(AbstractCollocationFinder):
         self.window_size = window_size
 
     @classmethod
-    def from_words(cls, words, window_size=2):
+    def from_words(cls, pivot_token, target_token, words, span):
         """Construct a BigramCollocationFinder for all bigrams in the given
         sequence.  When window_size > 2, count non-contiguous bigrams, in the
         style of Church and Hanks's (1990) association ratio.
@@ -172,17 +172,43 @@ class BigramCollocationFinder(AbstractCollocationFinder):
         wfd = FreqDist()
         bfd = FreqDist()
 
+        window_size = max(span)+1
+
         if window_size < 2:
             raise ValueError("Specify window_size at least 2")
 
-        for window in ngrams(words, window_size, pad_right=True):
+        for window in ngrams(words, window_size,pad_left= False, pad_right = True):
             w1 = window[0]
-            if w1 is None:
+            w1_is_pivot_token = False
+            if w1 is None or (w1 not in pivot_token and w1 not in target_token):
                 continue
+            if w1 in pivot_token:
+                w1_is_pivot_token = True
+
             wfd[w1] += 1
-            for w2 in window[1:]:
-                if w2 is not None:
-                    bfd[(w1, w2)] += 1
+
+            for i in range(len(window)-1):
+                i += 1
+                w2 = window[i]
+
+                if w2 is None:
+                    continue
+
+                if w1_is_pivot_token:
+                    if w2 in target_token:
+                        # check that target token is within right span of pivot token
+                        if i <= span[1]:
+                            bfd[(w1, w2)] += 1
+                    else:
+                        continue
+                else:
+                    if w2 in pivot_token:
+                        # check that target token is within left span of pivot token
+                        if i <= span[0]:
+                            bfd[(w1, w2)] += 1
+                    else:
+                        continue
+
         return cls(wfd, bfd, window_size=window_size)
 
     def score_ngram(self, score_fn, w1, w2):

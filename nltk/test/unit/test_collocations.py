@@ -76,38 +76,59 @@ def test_bigram3():
     )
 
 
-def test_bigram5():
-    b = BigramCollocationFinder.from_words(SENT, window_size=5)
+def test_bigram_custom_span_1():
+    pivot_tokens = ['numbers']
+    target_tokens = ['calls', 'personal']
+    corpus = ['calls', 'to', '0800', 'numbers', 'are', 'free', 'from', 'personal', 'mobiles', 'and', 'landlines']
+
+    b = BigramCollocationFinder.from_words(pivot_tokens, target_tokens, corpus, (3, 4))
+
     assert sorted(b.ngram_fd.items()) == sorted([
-        (('a', 'test'), 4),
-        (('is', 'a'), 4),
-        (('this', 'is'), 4),
-        (('is', 'test'), 3),
-        (('this', 'a'), 3),
-        (('a', 'a'), 1),
-        (('is', 'is'), 1),
-        (('test', 'test'), 1),
-        (('this', 'this'), 1),
+        (('calls', 'numbers'), 1),
+        (('numbers', 'personal'), 1),
+
     ])
-    assert sorted(b.word_fd.items()) == sorted(
-        [('a', 2), ('is', 2), ('test', 2), ('this', 2)]
-    )
-    n_word_fd = sum(b.word_fd.values())
-    n_ngram_fd = (sum(b.ngram_fd.values()) + 4 + 3 + 2 + 1) / 4.0
-    assert len(SENT) == n_word_fd == n_ngram_fd
-    assert close_enough(
-        sorted(b.score_ngrams(BigramAssocMeasures.pmi)),
-        sorted(
-            [
-                (('a', 'test'), 1.0),
-                (('is', 'a'), 1.0),
-                (('this', 'is'), 1.0),
-                (('is', 'test'), 0.5849625007211562),
-                (('this', 'a'), 0.5849625007211562),
-                (('a', 'a'), -1.0),
-                (('is', 'is'), -1.0),
-                (('test', 'test'), -1.0),
-                (('this', 'this'), -1.0),
-            ]
-        )
-    )
+
+def test_bigram_custom_span_2():
+    pivot_tokens = ['numbers']
+    target_tokens = ['calls', 'personal']
+    corpus = ['calls', 'to', '0800', 'numbers', 'are', 'free', 'from', 'from','personal', 'mobiles', 'and', 'landlines']
+
+    b = BigramCollocationFinder.from_words(pivot_tokens, target_tokens, corpus, (3, 4))
+
+    assert sorted(b.ngram_fd.items()) == sorted([
+        (('calls', 'numbers'), 1)
+
+    ])
+
+def test_bigram_custom_span_3():
+        pivot_tokens = ['test']
+        target_tokens = ['yes', 'not']
+        corpus = ['calls', 'to', '0800', 'numbers', 'are', 'free', 'from', 'from', 'personal', 'mobiles', 'and',
+                  'landlines']
+
+        b = BigramCollocationFinder.from_words(pivot_tokens, target_tokens, corpus, (3, 4))
+
+        assert sorted(b.ngram_fd.items()) == []
+
+def test_bigram_custom_span_4():
+    pivot_tokens = ['numbers']
+    target_tokens = ['calls', 'personal']
+    corpus = ['calls', 'to', '0800', 'numbers', 'are', 'free', 'from', 'from','personal', 'mobiles', 'and', 'landlines']
+
+    b = BigramCollocationFinder.from_words(pivot_tokens, target_tokens, corpus, (3, 3))
+
+    assert sorted(b.ngram_fd.items()) == sorted([
+        (('calls', 'numbers'), 1)
+
+    ])
+
+def test_bigram_custom_span_5():
+        pivot_tokens = ['numbers']
+        target_tokens = ['calls', 'personal']
+        corpus = ['calls', 'to', '0800', 'numbers', 'are', 'free', 'from', 'from', 'personal', 'mobiles', 'and',
+                  'landlines']
+
+        b = BigramCollocationFinder.from_words(pivot_tokens, target_tokens, corpus, (1, 1))
+
+        assert sorted(b.ngram_fd.items()) == []
