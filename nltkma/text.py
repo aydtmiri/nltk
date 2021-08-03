@@ -183,6 +183,8 @@ class ConcordanceIndex:
             len(self._offsets),
         )
 
+
+
     def find_concordance(self, pivot_tokens, target_tokens, span, context, allow_self_reference):
         """
         Find all concordance lines given the query word.
@@ -441,6 +443,39 @@ class Text:
 
     def __len__(self):
         return len(self.tokens)
+
+    def map_cleaned_corpus(self, corpus, cleaned_corpus):
+        mapping = []
+        backlog = []
+
+        cleaned_data_end = False
+
+        for i in range(len(corpus)):
+
+            if i > len(cleaned_corpus)-1:
+                cleaned_data_end = True
+
+            if cleaned_data_end is False and cleaned_corpus[i] == corpus[i]:
+                mapping.append(i)
+            elif len(backlog) > 0:
+                for pair in backlog:
+                    if pair[0] == corpus[i]:
+                        mapping[pair[1]] = i
+                        backlog.remove(pair)
+
+
+                if cleaned_data_end is False:
+                    backlog.append((cleaned_corpus[i], i))
+                    mapping.append(None)
+
+
+
+            elif cleaned_data_end is True:
+                break
+            else:
+                mapping.append(None)
+                backlog.append((cleaned_corpus[i], i))
+        return mapping
 
     # ////////////////////////////////////////////////////////////
     # Interactive console methods
