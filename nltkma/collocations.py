@@ -24,12 +24,6 @@ ngram given appropriate frequency counts. A number of standard association
 measures are provided in bigram_measures and trigram_measures.
 """
 
-# Possible TODOs:
-# - consider the distinction between f(x,_) and f(x) and whether our
-#   approximation is good enough for fragmented data, and mention it
-# - add a n-gram collocation finder with measures which only utilise n-gram
-#   and unigram counts (raw_freq, pmi, student_t)
-
 import itertools as _itertools
 from collections import defaultdict
 
