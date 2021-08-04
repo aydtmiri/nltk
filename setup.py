@@ -23,9 +23,9 @@ except LookupError:
 import os
 
 # Use the VERSION file to get NLTK version
-version_file = os.path.join(os.path.dirname(__file__), "nltk", "VERSION")
+version_file = os.path.join(os.path.dirname(__file__), "nltkma", "VERSION")
 with open(version_file) as fh:
-    nltk_version = fh.read().strip()
+    nltkma_version = fh.read().strip()
 
 # setuptools
 from setuptools import setup, find_packages
@@ -53,18 +53,15 @@ nltk=nltk.cli:cli
 _project_homepage = "http://nltk.org/"
 
 setup(
-    name="nltk",
-    description="Natural Language Toolkit",
-    version=nltk_version,
+    name="nltk-ma",
+    version=nltkma_version,
     url=_project_homepage,
     project_urls={
         "Documentation": _project_homepage,
-        "Source Code": "https://github.com/nltk/nltk",
-        "Issue Tracker": "https://github.com/nltk/nltk/issues"
+        "Source Code": "https://github.com/aydtmiri/nltk-ma"
     },
     long_description="""\
-The Natural Language Toolkit (NLTK) is a Python package for
-natural language processing.  NLTK requires Python 3.6, 3.7, 3.8, or 3.9.""",
+This implementation of NLTK extends the collocation and concordance line functions.""",
     license="Apache License, Version 2.0",
     keywords=[
         "NLP",
@@ -80,33 +77,9 @@ natural language processing.  NLTK requires Python 3.6, 3.7, 3.8, or 3.9.""",
         "natural language",
         "text analytics",
     ],
-    maintainer="Steven Bird",
-    maintainer_email="stevenbird1@gmail.com",
-    author="Steven Bird",
-    author_email="stevenbird1@gmail.com",
-    classifiers=[
-        "Development Status :: 5 - Production/Stable",
-        "Intended Audience :: Developers",
-        "Intended Audience :: Education",
-        "Intended Audience :: Information Technology",
-        "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: Apache Software License",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Topic :: Scientific/Engineering",
-        "Topic :: Scientific/Engineering :: Artificial Intelligence",
-        "Topic :: Scientific/Engineering :: Human Machine Interfaces",
-        "Topic :: Scientific/Engineering :: Information Analysis",
-        "Topic :: Text Processing",
-        "Topic :: Text Processing :: Filters",
-        "Topic :: Text Processing :: General",
-        "Topic :: Text Processing :: Indexing",
-        "Topic :: Text Processing :: Linguistic",
-    ],
-    package_data={"nltk": ["test/*.doctest", "VERSION"]},
+    maintainer="Miriam Aydt",
+    author="Steven Bird, Miriam Aydt",
+    package_data={"nltk-ma": ["test/*.doctest", "VERSION"]},
     python_requires='>=3.6',
     install_requires=[
         "click",
