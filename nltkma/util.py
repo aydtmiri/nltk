@@ -5,19 +5,15 @@
 # URL: <http://nltk.org/>
 # For license information, see LICENSE.TXT
 
-import sys
 import inspect
 import locale
 import re
-import types
 import textwrap
 import pydoc
-import bisect
 import os
 
-from itertools import islice, chain, combinations, tee
+from itertools import  combinations, tee
 from pprint import pprint
-from collections import defaultdict, deque
 
 from urllib.request import (
     build_opener,
@@ -29,7 +25,6 @@ from urllib.request import (
     HTTPPasswordMgrWithDefaultRealm,
 )
 
-from nltkma.internals import slice_bounds, raise_unorderable_types
 from nltkma.collections import *
 
 

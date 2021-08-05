@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: nltk-ma
+Version: 0.0.1
+Summary: UNKNOWN
+Home-page: http://nltk.org/
+Author: Steven Bird, Miriam Aydt
+Maintainer: Miriam Aydt
+License: Apache License, Version 2.0
+Project-URL: Documentation, http://nltk.org/
+Project-URL: Source Code, https://github.com/aydtmiri/nltk-ma
+Keywords: NLP,CL,natural language processing,computational linguistics,parsing,tagging,tokenizing,syntax,linguistics,language,natural language,text analytics
+Platform: UNKNOWN
+Requires-Python: >=3.6
+Provides-Extra: machine_learning
+Provides-Extra: plot
+Provides-Extra: tgrep
+Provides-Extra: twitter
+Provides-Extra: corenlp
+Provides-Extra: all
+License-File: LICENSE.txt
+License-File: AUTHORS.md
+License-File: README.md
+
+This implementation of NLTK extends the collocation and concordance line functions.
+

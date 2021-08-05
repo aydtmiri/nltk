@@ -27,10 +27,10 @@ import re
 import sys
 import tokenize
 import textwrap
-import nltk.corpus
+import nltkma.corpus
 from doctest import DocTestParser, register_optionflag
 from cStringIO import StringIO
-from nltk import defaultdict
+from nltkma import defaultdict
 
 ######################################################################
 # Regexps
@@ -60,7 +60,7 @@ DEPRECATED_DEF_PAT = (
 DEPRECATED_DEF_RE = re.compile(DEPRECATED_DEF_PAT, re.MULTILINE)
 
 CORPUS_READ_METHOD_RE = re.compile(
-    r'({})\.read\('.format('|'.join(re.escape(n) for n in dir(nltk.corpus)))
+    r'({})\.read\('.format('|'.join(re.escape(n) for n in dir(nltkma.corpus)))
 )
 
 CLASS_DEF_RE = re.compile(r'^\s*class\s+(\w+)\s*[:\(]')
@@ -226,13 +226,13 @@ def main():
 
     print('Importing nltk...')
     try:
-        import nltk
+        import nltkma
     except ImportError:
         print('Unable to import nltk -- check your PYTHONPATH.')
         sys.exit(-1)
 
     print('Finding definitions of deprecated funtions & classes in nltk...')
-    find_deprecated_defs(nltk.__path__[0])
+    find_deprecated_defs(nltkma.__path__[0])
 
     print('Looking for possible uses of deprecated funcs & classes...')
     dep_names = print_deprecated_uses(paths)

@@ -16,7 +16,7 @@ web/_build
 .noseids
 .coverage*
 nltk/test/*.html
-nltk/test/tweets*
+nltkma/test/tweets*
 model.crf.tagger
 brown.embedding
 pylintoutput
