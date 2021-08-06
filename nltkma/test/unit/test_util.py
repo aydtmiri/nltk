@@ -76,7 +76,7 @@ def test_map_cleaned_corpus_1():
     corpus = ['I','@' ,'!','really', ',', 'like', 'you', ',', 'a', ',', 'lot','yes']
     corpus_cleaned = ['I', 'really', 'like', 'you', 'a', 'lot','yes']
 
-    result = map_cleaned_corpus(corpus, corpus_cleaned)
+    result = map_cleaned_corpus(corpus, corpus_cleaned,False)
 
     assert result == [0, 3, 5, 6, 8, 10,11]
 
@@ -84,14 +84,22 @@ def test_map_cleaned_corpus_2():
     corpus = ['I', 'really', 'like', 'you', 'a', 'lot','yes']
     corpus_cleaned = ['I', 'really', 'like', 'you', 'a', 'lot','yes']
 
-    result = map_cleaned_corpus(corpus, corpus_cleaned)
+    result = map_cleaned_corpus(corpus, corpus_cleaned,False)
 
     assert result == [0, 1, 2, 3, 4, 5, 6]
 
-def test_map_cleaned_corpus_2():
+def test_map_cleaned_corpus_3():
     corpus = []
     corpus_cleaned = []
 
-    result = map_cleaned_corpus(corpus, corpus_cleaned)
+    result = map_cleaned_corpus(corpus, corpus_cleaned,False)
 
     assert result == []
+
+def test_map_cleaned_corpus_2():
+    corpus = ['I', 'really', 'like', 'you', 'a', 'lot','yes']
+    corpus_cleaned = ['i', 'really', 'like', 'you', 'a', 'lot','yes']
+
+    result = map_cleaned_corpus(corpus, corpus_cleaned,True)
+
+    assert result == [0, 1, 2, 3, 4, 5, 6]

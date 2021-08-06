@@ -13,9 +13,10 @@ Functionality includes: concordancing, collocation discovery,
 regular expression search over tokenized strings, and
 distributional similarity.
 """
-from collections import  namedtuple
-from nltkma.util import  map_cleaned_corpus
+from collections import namedtuple
+from nltkma.util import map_cleaned_corpus
 from nltkma.collocations import BigramCollocationFinder
+from nltkma.probability import FreqDist
 
 ConcordanceLine = namedtuple(
     "ConcordanceLine",
@@ -24,16 +25,17 @@ ConcordanceLine = namedtuple(
 )
 
 
-def find_concordance(pivot_tokens, target_tokens, span, context,  original_tokens ,cleaned_tokens,allow_self_reference,ignore_punctuation,):
+def find_concordance(pivot_tokens, target_tokens, span, context, original_tokens, cleaned_tokens, allow_self_reference,
+                     ignore_punctuation, tokens_are_lowercase):
     """
     Find all concordance lines given the query word.
 
     Provided with a list of words, these will be found as a phrase.
     """
 
-    b = BigramCollocationFinder.from_words(pivot_tokens, target_tokens, cleaned_tokens, span,allow_self_reference, )
+    b = BigramCollocationFinder.from_words(pivot_tokens, target_tokens, cleaned_tokens, span, allow_self_reference, )
 
-    index_mapping = map_cleaned_corpus(original_tokens, cleaned_tokens)
+    index_mapping = map_cleaned_corpus(original_tokens, cleaned_tokens,tokens_are_lowercase)
     # Find the instances of the word to create the ConcordanceLine
     concordance_list = []
 
@@ -46,26 +48,27 @@ def find_concordance(pivot_tokens, target_tokens, span, context,  original_token
             context_left_exists = True
             context_right_exists = True
 
-            left_span = original_tokens[max(0,index_mapping[ pos - span[0]]): index_mapping[pos]]
+            left_span = original_tokens[max(0, index_mapping[pos - span[0]]): index_mapping[pos]]
 
             try:
-                right_span = original_tokens[min(len(original_tokens),index_mapping[pos]+1): min(len(original_tokens),
-                                                                              index_mapping[pos + span[1]]+1)]
+                right_span = original_tokens[
+                             min(len(original_tokens), index_mapping[pos] + 1): min(len(original_tokens),
+                                                                                    index_mapping[pos + span[1]] + 1)]
             except IndexError:
-                right_span = original_tokens[index_mapping[pos]+1: original_tokens[len(original_tokens) - 1]]
+                right_span = original_tokens[index_mapping[pos] + 1: original_tokens[len(original_tokens) - 1]]
                 context_right_exists = False
 
             if ignore_punctuation:
                 try:
                     index = left_span.index('.')
-                    left_span = left_span[:index+1]
+                    left_span = left_span[:index + 1]
                     context_left_exists = False
                 except ValueError:
                     pass
 
                 try:
                     index = right_span.index('.')
-                    right_span = right_span[:index+1]
+                    right_span = right_span[:index + 1]
                     context_right_exists = False
                 except ValueError:
                     pass
@@ -82,23 +85,23 @@ def find_concordance(pivot_tokens, target_tokens, span, context,  original_token
             if index_mapping[pos + span[1]] < len(original_tokens) - 1 and context_right_exists:
                 try:
                     right_context = original_tokens[
-                                    index_mapping[pos + span[1]]+1: index_mapping[pos + span[1] + context[1]]+1]
+                                    index_mapping[pos + span[1]] + 1: index_mapping[pos + span[1] + context[1]] + 1]
                 except IndexError:
                     right_context = original_tokens[
-                                    index_mapping[pos + span[1]]+1: original_tokens[len(original_tokens) - 1]]
+                                    index_mapping[pos + span[1]] + 1: original_tokens[len(original_tokens) - 1]]
             else:
                 right_context = []
 
             if ignore_punctuation:
                 try:
                     index = left_context.index('.')
-                    left_context = left_context[:index+1]
+                    left_context = left_context[:index + 1]
                 except ValueError:
                     pass
 
                 try:
                     index = right_context.index('.')
-                    right_context = right_context[:index+1]
+                    right_context = right_context[:index + 1]
                 except ValueError:
                     pass
 
@@ -120,6 +123,17 @@ def find_concordance(pivot_tokens, target_tokens, span, context,  original_token
             right_print = " ".join([right_span_print, right_context_print])
             # The WYSIWYG line of the concordance.
             line_print = " ".join([left_print, query_word, right_print])
+
+            coll_fd = FreqDist()
+            coll_fd[collocation] = b.ngram_fd[collocation]
+
+            word_fd = FreqDist()
+            word_fd[collocation[0]] = b.word_fd[collocation[0]]
+            word_fd[collocation[1]] = b.word_fd[collocation[1]]
+
+            b_line = BigramCollocationFinder(word_fd,coll_fd,b.pos,b.dist,b.window_size)
+
+
             # Create the ConcordanceLine
             concordance_line = ConcordanceLine(
                 left_context_print,
@@ -130,7 +144,7 @@ def find_concordance(pivot_tokens, target_tokens, span, context,  original_token
                 left_print,
                 right_print,
                 line_print,
-                collocation,
+                b_line,
                 b.dist[collocation][i]
 
             )

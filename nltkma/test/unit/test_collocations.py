@@ -83,6 +83,7 @@ def test_bigram_5():
               'personal', 'and', 'landlines']
 
     b = BigramCollocationFinder.from_words(pivot_tokens, target_tokens, corpus, (2, 2), allow_self_reference=True)
+    score =  b.score_ngrams(BigramAssocMeasures.pmi)
 
     assert sorted(b.ngram_fd.items()) == [(('numbers', 'numbers'), 1),
                                            (('personal', 'landlines'), 1)]
@@ -107,3 +108,20 @@ def test_bigram_6():
         sorted(b.score_ngrams(BigramAssocMeasures.pmi)),
         sorted([(('personal', 'landlines'), 0.5849625007211561)]))
 
+def test_bigram_7():
+    corpus_token = ['Traditionally', ',', 'black', 'Black', 'Asians', 'Blacks', 'blacks', 'bame', 'a', 'text', 'is',
+                    'BAME', 'Asian', 'BAME', 'Asian', 'BAME', 'Asian', 'BAME', 'Asian', 'understood', 'minority',
+                    ',', 'asian', 'to', 'be', 'a', ',' 'piece', 'of', 'written', 'or', 'spoken', 'material', '.',
+                    'in', 'its', 'primary', 'form', '(', 'as', 'opposed', 'to', 'a', 'paraphrase', 'or']
+    corpus_token_cleaned = ['Traditionally', 'black', 'Black', 'Asians', 'Blacks', 'blacks', 'bame', 'a', 'text',
+                            'is',
+                            'BAME', 'Asian', 'BAME', 'Asian', 'BAME', 'Asian', 'BAME', 'Asian', 'understood',
+                            'minority',
+                            'asian', 'to', 'be', 'a', 'piece', 'of', 'written', 'or', 'spoken', 'material', 'in',
+                            'its',
+                            'primary', 'form', '(', 'as', 'opposed', 'to', 'a', 'paraphrase', 'or']
+
+    pivot_token = ['minority']
+    target_token = ['asian']
+
+    b = BigramCollocationFinder.from_words(pivot_token,target_token,corpus_token_cleaned,(3,3),True)

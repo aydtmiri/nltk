@@ -23,9 +23,10 @@ except LookupError:
 import os
 
 # Use the VERSION file to get NLTK version
-version_file = os.path.join(os.path.dirname(__file__), "nltkma", "VERSION")
-with open(version_file) as fh:
-    nltkma_version = fh.read().strip()
+# version_file = os.path.join(os.path.dirname(__file__), "nltkma", "VERSION")
+# with open(version_file) as fh:
+#     nltkma_version = fh.read().strip()
+nltkma_version = '0.0.3'
 
 # setuptools
 from setuptools import setup, find_packages
@@ -61,7 +62,7 @@ setup(
         "Source Code": "https://github.com/aydtmiri/nltk-ma"
     },
     long_description="""\
-This implementation of NLTK extends the collocation and concordance line functions.""",
+This implementation of NLTK (http://nltk.org/) extends the collocation and concordance line functions.""",
     license="Apache License, Version 2.0",
     keywords=[
         "NLP",

@@ -4,15 +4,15 @@ regex
 tqdm
 
 [all]
-matplotlib
-python-crfsuite
-requests
-scikit-learn
-pyparsing
-twython
-gensim<4.0.0
-scipy
 numpy
+twython
+python-crfsuite
+gensim<4.0.0
+requests
+matplotlib
+pyparsing
+scikit-learn
+scipy
 
 [corenlp]
 requests

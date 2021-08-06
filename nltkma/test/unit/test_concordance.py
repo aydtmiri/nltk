@@ -1,6 +1,7 @@
 import unittest
 from io import StringIO
 from nltkma.text import find_concordance
+from nltkma.collocations import BigramCollocationFinder, BigramAssocMeasures
 
 
 class TestConcordance(unittest.TestCase):
@@ -22,7 +23,7 @@ class TestConcordance(unittest.TestCase):
         pivot_token = ['minority']
         target_token = ['asian']
         result = find_concordance(pivot_token, target_token, (3, 3), (1, 10), corpus_token, corpus_token_cleaned, True,
-                                  True)
+                                  True, False)
 
         expected_line = 'Asian BAME Asian understood minority , asian to be a ,piece of written or spoken material .'
         expected_left_line = 'BAME Asian understood'
@@ -59,6 +60,7 @@ class TestConcordance(unittest.TestCase):
         target_token = ['asian']
         result = find_concordance(pivot_token, target_token, (3, 3), (1, 10), corpus_token, corpus_token_cleaned,
                                   True,
+                                  False,
                                   False)
 
         expected_line = 'Asian BAME Asian understood minority , asian to be a ,piece of written or spoken material . ' \
@@ -97,6 +99,7 @@ class TestConcordance(unittest.TestCase):
         target_token = []
         result = find_concordance(pivot_token, target_token, (3, 3), (1, 10), corpus_token, corpus_token_cleaned,
                                   True,
+                                  False,
                                   False)
 
         expected = []
@@ -125,8 +128,39 @@ class TestConcordance(unittest.TestCase):
         target_token = ['Asian']
         actual = find_concordance(pivot_token, target_token, (1, 1), (1, 10), corpus_token, corpus_token_cleaned,
                                   True,
+                                  False,
                                   False)
 
-        expected=[]
+        expected = []
         assert expected == actual
 
+    def test_concordance_list_1(self):
+        corpus_token = ['Traditionally', ',', 'black', 'Black', 'Asians', 'Blacks', 'blacks', 'bame', 'a', 'text', 'is',
+                        'BAME', 'Asian', 'BAME', 'Asian', 'BAME', 'Asian', 'BAME', 'Asian', 'understood', 'minority',
+                        ',', 'asian', 'to', 'be', 'a', ',' 'piece', 'of', 'written', 'or', 'spoken', 'material', '.',
+                        'in', 'its', 'primary', 'form', '(', 'as', 'opposed', 'to', 'a', 'paraphrase', 'or']
+        corpus_token_cleaned = ['traditionally', 'black', 'black', 'asians', 'blacks', 'blacks', 'bame', 'a', 'text',
+                                'is',
+                                'bame', 'asian', 'bAME', 'asian', 'bAME', 'asian', 'bame', 'asian', 'understood',
+                                'minority',
+                                'asian', 'to', 'be', 'a', 'piece', 'of', 'written', 'or', 'spoken', 'material', 'in',
+                                'its',
+                                'primary', 'form', '(', 'as', 'opposed', 'to', 'a', 'paraphrase', 'or']
+
+        pivot_token = ['minority']
+        target_token = ['asian']
+        result = find_concordance(pivot_token, target_token, (3, 3), (1, 10), corpus_token, corpus_token_cleaned, True,
+                                  True, True)
+
+        expected_line = 'Asian BAME Asian understood minority , asian to be a ,piece of written or spoken material .'
+        expected_left_line = 'BAME Asian understood'
+        expected_left_context = 'Asian'
+        expected_right_line = ', asian to be'
+        expected_right_context = 'a ,piece of written or spoken material .'
+        expected_query = 'minority'
+        assert expected_line == result[0].line
+        assert expected_left_context == result[0].left_context
+        assert expected_left_line == result[0].left_span
+        assert expected_query == result[0].query
+        assert expected_right_line == result[0].right_span
+        assert expected_right_context == result[0].right_context
