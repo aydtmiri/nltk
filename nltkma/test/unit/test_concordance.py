@@ -164,3 +164,80 @@ class TestConcordance(unittest.TestCase):
         assert expected_query == result[0].query
         assert expected_right_line == result[0].right_span
         assert expected_right_context == result[0].right_context
+
+    def test_concordance_list_5(self):
+        corpus_token = ['Hi','!', 'I', 'am', 'black', 'and', 'I', 'am', 'going', 'to', 'get', 'the', 'vaccine', 'next',
+                        'week', '.', 'Black', 'and', 'vaccine', '=', 'love', '.', 'That', 'is', 'all', 'I', 'am',
+                        'going', 'to', 'say', '!']
+        corpus_token_cleaned = ['Hi', 'I', 'am', 'black', 'and', 'I', 'am', 'going', 'to', 'get', 'the', 'vaccine',
+                                'next', 'week', 'Black', 'and', 'vaccine', 'love', 'That', 'is', 'all', 'I', 'am',
+                                'going', 'to', 'say']
+
+        pivot_token = ['vaccine']
+        target_token = ['Black']
+        result = find_concordance(pivot_token, target_token, (100, 100), (2, 2), corpus_token, corpus_token_cleaned, True,
+                                  True, False)
+
+        expected_line = ' Hi ! I am black and I am going to get the vaccine next week .  '
+        expected_left_line = 'Hi ! I am black and I am going to get the'
+        expected_left_context = ''
+        expected_right_line = 'next week .'
+        expected_right_context = ' '
+        expected_query = 'vaccine'
+        assert expected_line == result[0].line
+        assert expected_left_context == result[0].left_context
+        assert expected_left_line == result[0].left_span
+        assert expected_query == result[0].query
+        assert expected_right_line == result[0].right_span
+        assert expected_right_context == result[0].right_context
+
+    def test_concordance_list_6(self):
+
+            corpus_token = ['Hi','!', 'I', 'am', 'black', 'and', 'I', 'am', 'going', 'to', 'get', 'the', 'vaccine', 'next',
+                            'week', '.', 'Black', 'and', 'vaccine', '=', 'love', '.', 'That', 'is', 'all', 'I', 'am',
+                            'going', 'to', 'say', '!']
+            corpus_token_cleaned = ['Hi', 'I', 'am', 'black', 'and', 'I', 'am', 'going', 'to', 'get', 'the', 'vaccine',
+                                    'next', 'week', 'Black', 'and', 'vaccine', 'love', 'That', 'is', 'all', 'I', 'am',
+                                    'going', 'to', 'say']
+
+            pivot_token = ['vaccine']
+            target_token = ['black']
+            result = find_concordance(pivot_token, target_token, (10, 3), (100, 100), corpus_token, corpus_token_cleaned, True,
+                                      False, False)
+
+            expected_line = 'Hi ! I am black and I am going to get the vaccine next week . Black and vaccine = love . That is all I am going to say !'
+            expected_left_line = 'I am black and I am going to get the'
+            expected_left_context = 'Hi !'
+            expected_right_line = 'next week . Black'
+            expected_right_context = 'and vaccine = love . That is all I am going to say !'
+            expected_query = 'vaccine'
+            assert expected_line == result[0].line
+            assert expected_left_context == result[0].left_context
+            assert expected_left_line == result[0].left_span
+            assert expected_query == result[0].query
+            assert expected_right_line == result[0].right_span
+            assert expected_right_context == result[0].right_context
+
+    def test_concordance_list_6(self):
+
+            corpus_token = ['There', 'have', 'been', '20', 'presidents', 'of', 'the', 'University', 'of', 'Illinois', 'system', ',', 'a', 'system', 'of', 'public', 'universities', 'in', 'the', 'U', '.', 'S', '.', 'state', 'of', 'Illinois', '.', 'The', 'president', 'is', 'the', 'chief', 'executive', 'officer', 'and', 'a', 'faculty', 'member', 'of', 'each', 'of', 'its', 'colleges', ',', 'schools', ',', 'institutions', ',', 'and', 'divisions', '.', 'Elected', 'by', 'the', 'board', 'of', 'trustees', ',', 'the', 'president', 'is', 'responsible', 'to', 'them', 'for', 'the', 'operation', 'of', 'the', 'system', 'by', 'preparing', 'budgets', ',', 'recommending', 'persons', 'for', 'appointment', 'to', 'university', 'positions', ',', 'and', 'enforcing', 'of', 'the', 'rules', 'and', 'regulations', 'of', 'the', 'universities', '.', 'Following', 'the', 'establishment', 'of', 'the', 'office', 'in', '1867', ',', 'John', 'Milton', 'Gregory', 'served', 'as', 'the', 'first', 'president', ',', 'originally', 'titled', '&', 'quot', ';', 'regent', '&', 'quot', ';', '.', 'Three', 'presidents', ',', 'Lloyd', 'Morey', ',', 'James', 'J', '.', 'Stukel', ',', 'and', 'Robert', 'A', '.', 'Easter', ',', 'are', 'alumni', 'of', 'the', 'University', 'of', 'Illinois', 'Urbana', '-', 'Champaign', '.', 'The', 'current', 'president', 'is', 'Timothy', 'L', '.', 'Killeen', ',', 'who', 'has', 'held', 'the', 'position', 'since', '2015', '.']
+            corpus_token_cleaned = ['There', 'have', 'been', '20', 'presidents', 'of', 'the', 'University', 'of', 'Illinois', 'system', 'a', 'system', 'of', 'public', 'universities', 'in', 'the', 'U',  'S',  'state', 'of', 'Illinois', 'The', 'president', 'is', 'the', 'chief', 'executive', 'officer', 'and', 'a', 'faculty', 'member', 'of', 'each', 'of', 'its', 'colleges','schools', 'institutions', 'and', 'divisions','Elected', 'by', 'the', 'board', 'of', 'trustees', 'the', 'president', 'is', 'responsible', 'to', 'them', 'for', 'the', 'operation', 'of', 'the', 'system', 'by', 'preparing', 'budgets', 'recommending', 'persons', 'for', 'appointment', 'to', 'university', 'positions', 'and', 'enforcing', 'of', 'the', 'rules', 'and', 'regulations', 'of', 'the', 'universities', 'Following', 'the', 'establishment', 'of', 'the', 'office', 'in', '1867', 'John', 'Milton', 'Gregory', 'served', 'as', 'the', 'first', 'president', 'originally', 'titled', 'quot',  'regent', 'quot','Three', 'presidents','Lloyd', 'Morey', 'James', 'J', 'Stukel','and', 'Robert', 'A', 'Easter', 'are', 'alumni', 'of', 'the', 'University', 'of', 'Illinois', 'Urbana', 'Champaign', 'The', 'current', 'president', 'is', 'Timothy', 'L','Killeen', 'who', 'has', 'held', 'the', 'position', 'since', '2015']
+
+            pivot_token = ['University']
+            target_token = ['Illinois']
+            result = find_concordance(pivot_token, target_token, (10, 3), (1, 2), corpus_token, corpus_token_cleaned, True,
+                                      False, False)
+
+            expected_line = ' There have been 20 presidents of the University of Illinois system , a system'
+            expected_left_line = 'There have been 20 presidents of the'
+            expected_left_context = ''
+            expected_right_line = 'of Illinois system ,'
+            expected_right_context = 'a system'
+            expected_query = 'University'
+            assert expected_line == result[0].line
+            assert expected_left_context == result[0].left_context
+            assert expected_left_line == result[0].left_span
+            assert expected_query == result[0].query
+            assert expected_right_line == result[0].right_span
+            assert expected_right_context == result[0].right_context
+

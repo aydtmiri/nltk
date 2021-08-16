@@ -43,65 +43,71 @@ def find_concordance(pivot_tokens, target_tokens, span, context, original_tokens
         for i in range(len(b.pos[collocation])):
             pos = b.pos[collocation][i]
             query_word = cleaned_tokens[pos]
+
             # Find the context of query word.
             # i- context = contex left span
             context_left_exists = True
             context_right_exists = True
 
-            left_span = original_tokens[max(0, index_mapping[pos - span[0]]): index_mapping[pos]]
+            left_span = original_tokens[max(0, index_mapping[max(0,pos - span[0])]): index_mapping[pos]]
 
             try:
                 right_span = original_tokens[
-                             min(len(original_tokens), index_mapping[pos] + 1): min(len(original_tokens),
-                                                                                    index_mapping[pos + span[1]] + 1)]
+                             min(len(original_tokens)-1, index_mapping[pos] + 1):
+                             min(len(original_tokens)-1,index_mapping[pos + span[1] + 1])]
             except IndexError:
-                right_span = original_tokens[index_mapping[pos] + 1: original_tokens[len(original_tokens) - 1]]
+                right_span = original_tokens[
+                             min(len(original_tokens) - 1, index_mapping[pos] + 1):
+                             len(original_tokens)]
                 context_right_exists = False
 
             if ignore_punctuation:
                 try:
                     index = left_span.index('.')
-                    left_span = left_span[:index + 1]
+                    left_span = left_span[:max(0,index + 1)]
                     context_left_exists = False
                 except ValueError:
                     pass
 
                 try:
                     index = right_span.index('.')
-                    right_span = right_span[:index + 1]
+                    right_span = right_span[:min(len(right_span)-1,index + 1)]
                     context_right_exists = False
                 except ValueError:
                     pass
 
             # get additional context
-            if index_mapping[pos - span[0]] > 0 and context_left_exists:
+
+            if pos - span[0] > 0 and context_left_exists:
                 try:
                     left_context = original_tokens[
-                                   max(0, index_mapping[pos - span[0] - context[0]]): index_mapping[pos - span[0]]]
+                                   max(0, index_mapping[max(0,pos - span[0] - context[0])]): index_mapping[max(0,pos - span[0])]]
                 except IndexError:
                     left_context = original_tokens[max(0, original_tokens[0]): index_mapping[pos - span[0]]]
             else:
                 left_context = []
-            if index_mapping[pos + span[1]] < len(original_tokens) - 1 and context_right_exists:
+            if pos + span[1] < len(original_tokens) - 1 and context_right_exists:
                 try:
                     right_context = original_tokens[
-                                    index_mapping[pos + span[1]] + 1: index_mapping[pos + span[1] + context[1]] + 1]
+                                    index_mapping[min(len(original_tokens),pos + span[1]) + 1]:
+                                    min(len(original_tokens),index_mapping[pos + span[1] + context[1]]+1)]
                 except IndexError:
                     right_context = original_tokens[
-                                    index_mapping[pos + span[1]] + 1: original_tokens[len(original_tokens) - 1]]
+                                    index_mapping[min(len(original_tokens), pos + span[1])] + 1:
+                                    len(original_tokens)]
             else:
                 right_context = []
 
             if ignore_punctuation:
                 try:
                     index = left_context.index('.')
-                    left_context = left_context[:index + 1]
+                    left_context = left_context[:max(0,index + 1)]
                 except ValueError:
                     pass
 
                 try:
                     index = right_context.index('.')
-                    right_context = right_context[:index + 1]
+                    right_context = right_context[:min(len(right_context),index + 1)]
                 except ValueError:
                     pass
 

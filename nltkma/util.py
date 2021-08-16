@@ -12,7 +12,7 @@ import textwrap
 import pydoc
 import os
 
-from itertools import  combinations, tee
+from itertools import combinations, tee
 from pprint import pprint
 
 from urllib.request import (
@@ -1037,7 +1037,7 @@ def parallelize_preprocess(func, iterator, processes, progress_bar=False):
 # Map cleaned corpus token list (without punctuation) to original token list
 ############################################################################
 
-def map_cleaned_corpus(corpus, cleaned_corpus,tokens_are_lowercase):
+def map_cleaned_corpus(corpus, cleaned_corpus, tokens_are_lowercase):
     mapping = []
     # list with cleaned corpus tokens that are yet to be mapped
     # ('token',index_original_corpus)
@@ -1055,10 +1055,7 @@ def map_cleaned_corpus(corpus, cleaned_corpus,tokens_are_lowercase):
         if tokens_are_lowercase:
             corpus_token = corpus[i].lower()
 
-        if cleaned_data_end is False and cleaned_corpus[i] == corpus_token:
-            mapping.append(i)
-
-        elif len(backlog) > 0:
+        if len(backlog) > 0:
             for pair in backlog:
                 if pair[0] == corpus_token:
                     mapping[pair[1]] = i
@@ -1067,6 +1064,9 @@ def map_cleaned_corpus(corpus, cleaned_corpus,tokens_are_lowercase):
             if cleaned_data_end is False:
                 backlog.append((cleaned_corpus[i], i))
                 mapping.append(None)
+
+        elif cleaned_data_end is False and cleaned_corpus[i] == corpus_token:
+            mapping.append(i)
 
         elif cleaned_data_end is True:
             break
