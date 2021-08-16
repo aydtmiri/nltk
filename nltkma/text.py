@@ -24,8 +24,21 @@ ConcordanceLine = namedtuple(
      "collocation", "dist"],
 )
 
+def join_punctuation(seq, characters='.,;?!'):
+    characters = set(characters)
+    seq = iter(seq)
+    current = next(seq)
 
-def find_concordance(pivot_tokens, target_tokens, span, context, original_tokens, cleaned_tokens, allow_self_reference,
+    for nxt in seq:
+        if nxt in characters:
+            current += nxt
+        else:
+            yield current
+            current = nxt
+
+    yield current
+
+def find_concordance(pivot_tokens, target_tokens, span, context, original_tokens, cleaned_tokens, tokens_no_stamming, allow_self_reference,
                      ignore_punctuation, tokens_are_lowercase):
     """
     Find all concordance lines given the query word.
@@ -35,7 +48,7 @@ def find_concordance(pivot_tokens, target_tokens, span, context, original_tokens
 
     b = BigramCollocationFinder.from_words(pivot_tokens, target_tokens, cleaned_tokens, span, allow_self_reference, )
 
-    index_mapping = map_cleaned_corpus(original_tokens, cleaned_tokens,tokens_are_lowercase)
+    index_mapping = map_cleaned_corpus(original_tokens, tokens_no_stamming,tokens_are_lowercase)
     # Find the instances of the word to create the ConcordanceLine
     concordance_list = []
 

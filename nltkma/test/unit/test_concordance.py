@@ -225,7 +225,7 @@ class TestConcordance(unittest.TestCase):
 
             pivot_token = ['University']
             target_token = ['Illinois']
-            result = find_concordance(pivot_token, target_token, (10, 3), (1, 2), corpus_token, corpus_token_cleaned, True,
+            result = find_concordance(pivot_token, target_token, (10, 3), (1, 2), corpus_token, corpus_token_cleaned,corpus_token_cleaned, True,
                                       False, False)
 
             expected_line = ' There have been 20 presidents of the University of Illinois system , a system'
