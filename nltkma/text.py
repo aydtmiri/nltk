@@ -62,12 +62,12 @@ def find_concordance(pivot_tokens, target_tokens, span, context, original_tokens
             context_left_exists = True
             context_right_exists = True
 
-            left_span = original_tokens[max(0, index_mapping[max(0,pos - span[0])]): index_mapping[pos]]
+            left_span = original_tokens[max(0, max(0,index_mapping[pos]- span[0])): index_mapping[pos]]
 
             try:
                 right_span = original_tokens[
                              min(len(original_tokens)-1, index_mapping[pos] + 1):
-                             min(len(original_tokens)-1,index_mapping[pos + span[1] + 1])]
+                             min(len(original_tokens)-1,index_mapping[pos + 1]+ span[1])]
             except IndexError:
                 right_span = original_tokens[
                              min(len(original_tokens) - 1, index_mapping[pos] + 1):
@@ -94,7 +94,7 @@ def find_concordance(pivot_tokens, target_tokens, span, context, original_tokens
             if pos - span[0] > 0 and context_left_exists:
                 try:
                     left_context = original_tokens[
-                                   max(0, index_mapping[max(0,pos - span[0] - context[0])]): index_mapping[max(0,pos - span[0])]]
+                                   max(0,max(0, index_mapping[pos - span[0]] - context[0])): index_mapping[max(0,pos - span[0])]]
                 except IndexError:
                     left_context = original_tokens[max(0, original_tokens[0]): index_mapping[pos - span[0]]]
             else:
@@ -103,7 +103,7 @@ def find_concordance(pivot_tokens, target_tokens, span, context, original_tokens
                 try:
                     right_context = original_tokens[
                                     index_mapping[min(len(original_tokens),pos + span[1]) + 1]:
-                                    min(len(original_tokens),index_mapping[pos + span[1] + context[1]]+1)]
+                                    min(len(original_tokens),index_mapping[pos + span[1]]+context[1]+2)]
                 except IndexError:
                     right_context = original_tokens[
                                     index_mapping[min(len(original_tokens), pos + span[1])] + 1:

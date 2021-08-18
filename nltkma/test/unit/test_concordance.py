@@ -241,3 +241,4 @@ class TestConcordance(unittest.TestCase):
             assert expected_right_line == result[0].right_span
             assert expected_right_context == result[0].right_context
 
+   

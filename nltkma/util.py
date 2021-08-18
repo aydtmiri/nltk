@@ -1060,6 +1060,7 @@ def map_cleaned_corpus(corpus, cleaned_corpus, tokens_are_lowercase):
                 if pair[0] == corpus_token:
                     mapping[pair[1]] = i
                     backlog.remove(pair)
+                    break
 
             if cleaned_data_end is False:
                 backlog.append((cleaned_corpus[i], i))
