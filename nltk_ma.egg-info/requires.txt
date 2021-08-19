@@ -6,13 +6,13 @@ tqdm
 [all]
 pyparsing
 numpy
+gensim<4.0.0
 matplotlib
 scipy
-python-crfsuite
 scikit-learn
-requests
-gensim<4.0.0
 twython
+requests
+python-crfsuite
 
 [corenlp]
 requests

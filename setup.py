@@ -26,7 +26,7 @@ import os
 # version_file = os.path.join(os.path.dirname(__file__), "nltkma", "VERSION")
 # with open(version_file) as fh:
 #     nltkma_version = fh.read().strip()
-nltkma_version = '0.0.4'
+nltkma_version = '0.0.6'
 
 # setuptools
 from setuptools import setup, find_packages
