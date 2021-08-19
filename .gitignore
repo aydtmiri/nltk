@@ -15,7 +15,7 @@ web/_build
 *.errs
 .noseids
 .coverage*
-nltk/test/*.html
+nltkma/test/*.html
 nltkma/test/tweets*
 model.crf.tagger
 brown.embedding
@@ -56,6 +56,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+dist/
 
 #vscode
 .vscode/
