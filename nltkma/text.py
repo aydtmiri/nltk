@@ -56,18 +56,24 @@ def find_concordance(pivot_tokens, target_tokens, span, context, original_tokens
         for i in range(len(b.pos[collocation])):
             pos = b.pos[collocation][i]
             query_word = cleaned_tokens[pos]
+            target_token = ''
+
+            if collocation[0] == query_word:
+                target_token = collocation[1]
+            else:
+                target_token = collocation[0]
 
             # Find the context of query word.
             # i- context = contex left span
             context_left_exists = True
             context_right_exists = True
 
-            left_span = original_tokens[max(0, max(0,index_mapping[pos]- span[0])): index_mapping[pos]]
+            left_span = original_tokens[max(0, max(0,index_mapping[pos]- span[0]-1)): index_mapping[pos]]
 
             try:
                 right_span = original_tokens[
                              min(len(original_tokens)-1, index_mapping[pos] + 1):
-                             min(len(original_tokens)-1,index_mapping[pos + 1]+ span[1])]
+                             min(len(original_tokens)-1,index_mapping[pos + 1+ span[1]])]
             except IndexError:
                 right_span = original_tokens[
                              min(len(original_tokens) - 1, index_mapping[pos] + 1):
@@ -75,17 +81,30 @@ def find_concordance(pivot_tokens, target_tokens, span, context, original_tokens
                 context_right_exists = False
 
             if ignore_punctuation:
+                contains_target_token = False
                 try:
+                    contains_target_token = target_token in left_span
                     index = left_span.index('.')
-                    left_span = left_span[:max(0,index + 1)]
-                    context_left_exists = False
+                    tmp_left_span = left_span[max(0,index):len(left_span)]
+                    if target_token not in tmp_left_span and contains_target_token:
+                        pass
+                    else:
+                        left_span = tmp_left_span
+                        context_left_exists = False
+
                 except ValueError:
                     pass
 
                 try:
+                    contains_target_token = target_token in right_span
                     index = right_span.index('.')
-                    right_span = right_span[:min(len(right_span)-1,index + 1)]
-                    context_right_exists = False
+                    tmp_right_span = right_span[:min(len(right_span)-1,index + 1)]
+
+                    if target_token not in tmp_right_span and contains_target_token:
+                        pass
+                    else:
+                        right_span = tmp_right_span
+                        context_right_exists = False
                 except ValueError:
                     pass
 
@@ -114,7 +133,7 @@ def find_concordance(pivot_tokens, target_tokens, span, context, original_tokens
             if ignore_punctuation:
                 try:
                     index = left_context.index('.')
-                    left_context = left_context[:max(0,index + 1)]
+                    left_context = left_context[max(0,index):len(left_context)]
                 except ValueError:
                     pass
 

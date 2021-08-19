@@ -241,4 +241,76 @@ class TestConcordance(unittest.TestCase):
             assert expected_right_line == result[0].right_span
             assert expected_right_context == result[0].right_context
 
-   
+    def test_concordance_list_6(self):
+
+            corpus_token = ['The', 'Gurian', 'Republic', 'was', 'an', 'insurrection', 'and', 'protest', 'movement', 'in', 'the', 'western', 'Georgian', 'region', 'of', 'Guria', 'between', '1902', 'and', '1906', ',', 'against', 'the', 'Russian', 'Empire', '.', 'It', 'arose', 'from', 'a', 'revolt', 'over', 'land', 'grazing', 'rights', ';', 'taxation', ',', 'land', 'ownership', 'and', 'economic', 'factors', 'were', 'also', 'concerns', '.', 'The', 'Republic', 'established', 'its', 'own', 'system', 'of', 'government', ',', 'although', 'it', 'was', 'not', 'anti', '-', 'Russian', ',', 'desiring', 'to', 'remain', 'within', 'the', 'Empire', '.', 'The', '1905', 'Russian', 'Revolution', 'led', 'to', 'uprisings', 'throughout', 'the', 'Empire', ',', 'including', 'Georgia', ',', 'and', 'in', 'reaction', 'the', 'imperial', 'authorities', 'deployed', 'the', 'military', 'to', 'end', 'the', 'rebellions', '.', 'The', 'peasants', 'were', 'able', 'to', 'fend', 'off', 'a', 'small', 'force', 'of', 'Cossacks', ',', 'but', 'overwhelming', 'military', 'force', 'was', 'used', 'to', 're', '-', 'assert', 'control', 'in', '1906', '.', 'Some', 'of', 'the', 'Republic', '&', '#', 'x27', ';', 's', 'leaders', 'were', 'executed', ',', 'imprisoned', 'or', 'exiled', ',', 'but', 'others', 'later', 'played', 'prominent', 'roles', 'in', 'the', '1918', '–', '1921', 'Democratic', 'Republic', 'of', 'Georgia', '.', 'The', 'Gurian', 'Republic', 'demonstrated', 'that', 'peasants', 'could', 'participate', 'in', 'the', 'socialist', 'movement', ',', 'an', 'idea', 'previously', 'downplayed', 'by', 'leading', 'Marxists', '.']
+            corpus_token_cleaned = ['The', 'Gurian', 'Republic', 'insurrection', 'protest', 'movement', 'western', 'Georgian', 'region', 'Guria', '1902', '1906', 'Russian', 'Empire', 'It', 'arose', 'revolt', 'land', 'grazing', 'rights', 'taxation', 'land', 'ownership', 'economic', 'factors', 'also', 'concerns', 'The', 'Republic', 'established', 'system', 'government', 'although', 'anti', 'Russian', 'desiring', 'remain', 'within', 'Empire', 'The', '1905', 'Russian', 'Revolution', 'led', 'uprisings', 'throughout', 'Empire', 'including', 'Georgia', 'reaction', 'imperial', 'authorities', 'deployed', 'military', 'end', 'rebellions', 'The', 'peasants', 'able', 'fend', 'small', 'force', 'Cossacks', 'overwhelming', 'military', 'force', 'used', 're', 'assert', 'control', '1906', 'Some', 'Republic', 'x27', 's', 'leaders', 'executed', 'imprisoned', 'exiled', 'others', 'later', 'played', 'prominent', 'roles', '1918', '1921', 'Democratic', 'Republic', 'Georgia', 'The', 'Gurian', 'Republic', 'demonstrated', 'peasants', 'participate', 'socialist', 'movement', 'idea', 'previously', 'downplayed', 'leading', 'Marxists']
+            corpus_wo_stamming = ['The', 'Gurian', 'Republic', 'insurrection', 'protest', 'movement', 'western', 'Georgian', 'region', 'Guria', '1902', '1906', 'Russian', 'Empire', 'It', 'arose', 'revolt', 'land', 'grazing', 'rights', 'taxation', 'land', 'ownership', 'economic', 'factors', 'also', 'concerns', 'The', 'Republic', 'established', 'system', 'government', 'although', 'anti', 'Russian', 'desiring', 'remain', 'within', 'Empire', 'The', '1905', 'Russian', 'Revolution', 'led', 'uprisings', 'throughout', 'Empire', 'including', 'Georgia', 'reaction', 'imperial', 'authorities', 'deployed', 'military', 'end', 'rebellions', 'The', 'peasants', 'able', 'fend', 'small', 'force', 'Cossacks', 'overwhelming', 'military', 'force', 'used', 're', 'assert', 'control', '1906', 'Some', 'Republic', 'x27', 's', 'leaders', 'executed', 'imprisoned', 'exiled', 'others', 'later', 'played', 'prominent', 'roles', '1918', '1921', 'Democratic', 'Republic', 'Georgia', 'The', 'Gurian', 'Republic', 'demonstrated', 'peasants', 'participate', 'socialist', 'movement', 'idea', 'previously', 'downplayed', 'leading', 'Marxists']
+
+            pivot_token = ['Russian']
+            target_token = ['Revolution']
+            result = find_concordance(pivot_token, target_token, (5, 5), (2, 2), corpus_token, corpus_token_cleaned,corpus_wo_stamming, True,
+                                      True, False)
+
+            expected_line = '  . The 1905 Russian Revolution led to uprisings throughout the Empire , including Georgia'
+            expected_left_line = '. The 1905'
+            expected_left_context = ' '
+            expected_right_line ='Revolution led to uprisings throughout the Empire ,'
+            expected_right_context = 'including Georgia'
+            expected_query = 'Russian'
+            assert expected_line == result[0].line
+            assert expected_left_context == result[0].left_context
+            assert expected_left_line == result[0].left_span
+            assert expected_query == result[0].query
+            assert expected_right_line == result[0].right_span
+            assert expected_right_context == result[0].right_context
+
+
+    def test_concordance_list_7(self):
+
+            corpus_token = ['The', 'Gurian', 'Republic', 'was', 'an', 'insurrection', 'and', 'protest', 'movement', 'in', 'the', 'western', 'Georgian', 'region', 'of', 'Guria', 'between', '1902', 'and', '1906', ',', 'against', 'the', 'Russian', 'Empire', '.', 'It', 'arose', 'from', 'a', 'revolt', 'over', 'land', 'grazing', 'rights', ';', 'taxation', ',', 'land', 'ownership', 'and', 'economic', 'factors', 'were', 'also', 'concerns', '.', 'The', 'Republic', 'established', 'its', 'own', 'system', 'of', 'government', ',', 'although', 'it', 'was', 'not', 'anti', '-', 'Russian', ',', 'desiring', 'to', 'remain', 'within', 'the', 'Empire', '.', 'The', '1905', 'Russian', 'Revolution', 'led', 'to', 'uprisings', 'throughout', 'the', 'Empire', ',', 'including', 'Georgia', ',', 'and', 'in', 'reaction', 'the', 'imperial', 'authorities', 'deployed', 'the', 'military', 'to', 'end', 'the', 'rebellions', '.', 'The', 'peasants', 'were', 'able', 'to', 'fend', 'off', 'a', 'small', 'force', 'of', 'Cossacks', ',', 'but', 'overwhelming', 'military', 'force', 'was', 'used', 'to', 're', '-', 'assert', 'control', 'in', '1906', '.', 'Some', 'of', 'the', 'Republic', '&', '#', 'x27', ';', 's', 'leaders', 'were', 'executed', ',', 'imprisoned', 'or', 'exiled', ',', 'but', 'others', 'later', 'played', 'prominent', 'roles', 'in', 'the', '1918', '–', '1921', 'Democratic', 'Republic', 'of', 'Georgia', '.', 'The', 'Gurian', 'Republic', 'demonstrated', 'that', 'peasants', 'could', 'participate', 'in', 'the', 'socialist', 'movement', ',', 'an', 'idea', 'previously', 'downplayed', 'by', 'leading', 'Marxists', '.']
+            corpus_token_cleaned = ['The', 'Gurian', 'Republic', 'insurrection', 'protest', 'movement', 'western', 'Georgian', 'region', 'Guria', '1902', '1906', 'Russian', 'Empire', 'It', 'arose', 'revolt', 'land', 'grazing', 'rights', 'taxation', 'land', 'ownership', 'economic', 'factors', 'also', 'concerns', 'The', 'Republic', 'established', 'system', 'government', 'although', 'anti', 'Russian', 'desiring', 'remain', 'within', 'Empire', 'The', '1905', 'Russian', 'Revolution', 'led', 'uprisings', 'throughout', 'Empire', 'including', 'Georgia', 'reaction', 'imperial', 'authorities', 'deployed', 'military', 'end', 'rebellions', 'The', 'peasants', 'able', 'fend', 'small', 'force', 'Cossacks', 'overwhelming', 'military', 'force', 'used', 're', 'assert', 'control', '1906', 'Some', 'Republic', 'x27', 's', 'leaders', 'executed', 'imprisoned', 'exiled', 'others', 'later', 'played', 'prominent', 'roles', '1918', '1921', 'Democratic', 'Republic', 'Georgia', 'The', 'Gurian', 'Republic', 'demonstrated', 'peasants', 'participate', 'socialist', 'movement', 'idea', 'previously', 'downplayed', 'leading', 'Marxists']
+            corpus_wo_stamming = ['The', 'Gurian', 'Republic', 'insurrection', 'protest', 'movement', 'western', 'Georgian', 'region', 'Guria', '1902', '1906', 'Russian', 'Empire', 'It', 'arose', 'revolt', 'land', 'grazing', 'rights', 'taxation', 'land', 'ownership', 'economic', 'factors', 'also', 'concerns', 'The', 'Republic', 'established', 'system', 'government', 'although', 'anti', 'Russian', 'desiring', 'remain', 'within', 'Empire', 'The', '1905', 'Russian', 'Revolution', 'led', 'uprisings', 'throughout', 'Empire', 'including', 'Georgia', 'reaction', 'imperial', 'authorities', 'deployed', 'military', 'end', 'rebellions', 'The', 'peasants', 'able', 'fend', 'small', 'force', 'Cossacks', 'overwhelming', 'military', 'force', 'used', 're', 'assert', 'control', '1906', 'Some', 'Republic', 'x27', 's', 'leaders', 'executed', 'imprisoned', 'exiled', 'others', 'later', 'played', 'prominent', 'roles', '1918', '1921', 'Democratic', 'Republic', 'Georgia', 'The', 'Gurian', 'Republic', 'demonstrated', 'peasants', 'participate', 'socialist', 'movement', 'idea', 'previously', 'downplayed', 'leading', 'Marxists']
+
+            pivot_token = ['Empire']
+            target_token = ['It']
+            result = find_concordance(pivot_token, target_token, (5, 5), (2, 2), corpus_token, corpus_token_cleaned,corpus_wo_stamming, True,
+                                      True, False)
+
+            expected_line = 'western Georgian and 1906 , against the Russian Empire . It arose from a revolt over land grazing rights ; taxation'
+            expected_left_line = 'and 1906 , against the Russian'
+            expected_left_context = 'western Georgian'
+            expected_right_line ='. It arose from a revolt over land grazing'
+            expected_right_context = 'rights ; taxation'
+            expected_query = 'Empire'
+            assert expected_line == result[0].line
+            assert expected_left_context == result[0].left_context
+            assert expected_left_line == result[0].left_span
+            assert expected_query == result[0].query
+            assert expected_right_line == result[0].right_span
+            assert expected_right_context == result[0].right_context
+
+    def test_concordance_list_8(self):
+
+            corpus_token = ['The', 'Gurian', 'Republic', 'was', 'an', 'insurrection', 'and', 'protest', 'movement', 'in', 'the', 'western', 'Georgian', 'region', 'of', 'Guria', 'between', '1902', 'and', '1906', ',', 'against', 'the', 'Russian', 'Empire', '.', 'It', 'arose', 'from', 'a', 'revolt', 'over', 'land', 'grazing', 'rights', ';', 'taxation', ',', 'land', 'ownership', 'and', 'economic', 'factors', 'were', 'also', 'concerns', '.', 'The', 'Republic', 'established', 'its', 'own', 'system', 'of', 'government', ',', 'although', 'it', 'was', 'not', 'anti', '-', 'Russian', ',', 'desiring', 'to', 'remain', 'within', 'the', 'Empire', '.', 'The', '1905', 'Russian', 'Revolution', 'led', 'to', 'uprisings', 'throughout', 'the', 'Empire', ',', 'including', 'Georgia', ',', 'and', 'in', 'reaction', 'the', 'imperial', 'authorities', 'deployed', 'the', 'military', 'to', 'end', 'the', 'rebellions', '.', 'The', 'peasants', 'were', 'able', 'to', 'fend', 'off', 'a', 'small', 'force', 'of', 'Cossacks', ',', 'but', 'overwhelming', 'military', 'force', 'was', 'used', 'to', 're', '-', 'assert', 'control', 'in', '1906', '.', 'Some', 'of', 'the', 'Republic', '&', '#', 'x27', ';', 's', 'leaders', 'were', 'executed', ',', 'imprisoned', 'or', 'exiled', ',', 'but', 'others', 'later', 'played', 'prominent', 'roles', 'in', 'the', '1918', '–', '1921', 'Democratic', 'Republic', 'of', 'Georgia', '.', 'The', 'Gurian', 'Republic', 'demonstrated', 'that', 'peasants', 'could', 'participate', 'in', 'the', 'socialist', 'movement', ',', 'an', 'idea', 'previously', 'downplayed', 'by', 'leading', 'Marxists', '.']
+            corpus_token_cleaned = ['The', 'Gurian', 'Republic', 'insurrection', 'protest', 'movement', 'western', 'Georgian', 'region', 'Guria', '1902', '1906', 'Russian', 'Empire', 'It', 'arose', 'revolt', 'land', 'grazing', 'rights', 'taxation', 'land', 'ownership', 'economic', 'factors', 'also', 'concerns', 'The', 'Republic', 'established', 'system', 'government', 'although', 'anti', 'Russian', 'desiring', 'remain', 'within', 'Empire', 'The', '1905', 'Russian', 'Revolution', 'led', 'uprisings', 'throughout', 'Empire', 'including', 'Georgia', 'reaction', 'imperial', 'authorities', 'deployed', 'military', 'end', 'rebellions', 'The', 'peasants', 'able', 'fend', 'small', 'force', 'Cossacks', 'overwhelming', 'military', 'force', 'used', 're', 'assert', 'control', '1906', 'Some', 'Republic', 'x27', 's', 'leaders', 'executed', 'imprisoned', 'exiled', 'others', 'later', 'played', 'prominent', 'roles', '1918', '1921', 'Democratic', 'Republic', 'Georgia', 'The', 'Gurian', 'Republic', 'demonstrated', 'peasants', 'participate', 'socialist', 'movement', 'idea', 'previously', 'downplayed', 'leading', 'Marxists']
+            corpus_wo_stamming = ['The', 'Gurian', 'Republic', 'insurrection', 'protest', 'movement', 'western', 'Georgian', 'region', 'Guria', '1902', '1906', 'Russian', 'Empire', 'It', 'arose', 'revolt', 'land', 'grazing', 'rights', 'taxation', 'land', 'ownership', 'economic', 'factors', 'also', 'concerns', 'The', 'Republic', 'established', 'system', 'government', 'although', 'anti', 'Russian', 'desiring', 'remain', 'within', 'Empire', 'The', '1905', 'Russian', 'Revolution', 'led', 'uprisings', 'throughout', 'Empire', 'including', 'Georgia', 'reaction', 'imperial', 'authorities', 'deployed', 'military', 'end', 'rebellions', 'The', 'peasants', 'able', 'fend', 'small', 'force', 'Cossacks', 'overwhelming', 'military', 'force', 'used', 're', 'assert', 'control', '1906', 'Some', 'Republic', 'x27', 's', 'leaders', 'executed', 'imprisoned', 'exiled', 'others', 'later', 'played', 'prominent', 'roles', '1918', '1921', 'Democratic', 'Republic', 'Georgia', 'The', 'Gurian', 'Republic', 'demonstrated', 'peasants', 'participate', 'socialist', 'movement', 'idea', 'previously', 'downplayed', 'leading', 'Marxists']
+
+            pivot_token = ['Empire']
+            target_token = ['It']
+            result = find_concordance(pivot_token, target_token, (5, 5), (2, 2), corpus_token, corpus_token_cleaned,corpus_wo_stamming, True,
+                                      False, False)
+
+            expected_line = 'western Georgian and 1906 , against the Russian Empire . It arose from a revolt over land grazing rights ; taxation'
+            expected_left_line = 'and 1906 , against the Russian'
+            expected_left_context = 'western Georgian'
+            expected_right_line ='. It arose from a revolt over land grazing'
+            expected_right_context = 'rights ; taxation'
+            expected_query = 'Empire'
+            assert expected_line == result[0].line
+            assert expected_left_context == result[0].left_context
+            assert expected_left_line == result[0].left_span
+            assert expected_query == result[0].query
+            assert expected_right_line == result[0].right_span
+            assert expected_right_context == result[0].right_context
+
